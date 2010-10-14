@@ -14,10 +14,11 @@ public class Entosis extends PApplet {
 	public void setup() {
 		
 		size(screenX, screenY);
+		smooth();
 		
 		Cell.parent = this;
 		
-		firstCell = new Cell(screenX/2, screenY/2, generateVelocity(), generateVelocity(), 20, color(0,0,255), 1, color(0,0,0));
+		firstCell = new Cell(screenX/2, screenY/2, generateVelocity(), generateVelocity(), 10, color(0,255,0,125), color(0,0,255,125), 1, color(0,0,0,125));
 		
 	}
 
