@@ -1,6 +1,7 @@
 package entosis;
 
 import processing.core.PApplet;
+import processing.core.PVector;
 
 
 public class Entosis extends PApplet {
@@ -18,8 +19,7 @@ public class Entosis extends PApplet {
 		
 		Cell.parent = this;
 		
-		firstCell = new Cell(screenX/2, screenY/2, generateVelocity(), generateVelocity(), 10, color(0,255,0,125), color(0,0,255,125), 1, color(0,0,0,125));
-		
+		firstCell = new Cell(screenX/2, screenY/2, generateVelocity(), 10, color(0,255,0,125), color(0,0,255,125), 1, color(0,0,0,125));
 	}
 
 	public void draw() {
@@ -34,13 +34,16 @@ public class Entosis extends PApplet {
 		
 	}
 	
-	public float generateVelocity() {
+	public PVector generateVelocity() {
 		
-		float velocity = 0.0f;
+		float velocity[] = new float[2];
 		
-		while(velocity == 0.0f) {
-			velocity = random(-2,2);
+		for( int i=0; i<2; i++ ) {
+			velocity[i] = 0.0f;
+			while(velocity[i] == 0.0f) {
+				velocity[i] = random(-2,2);
+			}
 		}
-		return velocity;
+		return new PVector(velocity[0], velocity[1]);
 	}
 }

@@ -1,11 +1,14 @@
 package entosis;
 
 import processing.core.PApplet;
+import processing.core.PVector;
 
 public class Cell {
 	
 	protected float x;
 	protected float y;
+	
+	protected PVector velocity;
 	
 	protected float velocityX;
 	protected float velocityY;
@@ -21,13 +24,13 @@ public class Cell {
 	public Cell() {	// generic constructor
 	}
 	
-	public Cell(float x, float y, float velocityX, float velocityY, float radius,
+	public Cell(float x, float y, PVector velocity, float radius,
 			int c1, int c2, int strokeThickness, int strokeColor) {
 		super();
 		this.x = x;
 		this.y = y;
-		this.velocityX = velocityX;
-		this.velocityY = velocityY;
+		this.velocityX = velocity.x;
+		this.velocityY = velocity.y;
 		this.radius = radius;
 		this.c1 = c1;
 		this.c2 = c2;
@@ -39,11 +42,11 @@ public class Cell {
 		x += velocityX;
 		y += velocityY;
 		
-		if( x+radius/2 > 480 || x-radius/2 < 0.0f ) { // How replace 480 with screenX from main class? // Have to pass in with every new Cell created?
+		if( x+radius > 480 || x-radius < 0.0f ) { // How replace 480 with screenX from main class? // Have to pass in with every new Cell created?
 			velocityX *= -1;
 		}
 		
-		if ( y+radius/2 > 320 || y-radius/2 < 0.0f ) {
+		if ( y+radius > 320 || y-radius < 0.0f ) {
 			velocityY *= -1;
 		}
 	}
