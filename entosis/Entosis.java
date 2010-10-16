@@ -17,9 +17,9 @@ public class Entosis extends PApplet {
 		size(screenX, screenY);
 		smooth();
 		
-		Cell.parent = this;
+		Cell.papplet = this;
 		
-		firstCell = new Cell(screenX/2, screenY/2, generateVelocity(), 10, color(0,255,0,125), color(0,0,255,125), 1, color(0,0,0,125));
+		firstCell = new Player(10, color(0,255,0,125), color(0,0,255,125), 1, color(0,0,0,125));
 	}
 
 	public void draw() {
@@ -34,16 +34,8 @@ public class Entosis extends PApplet {
 		
 	}
 	
-	public PVector generateVelocity() {
-		
-		float velocity[] = new float[2];
-		
-		for( int i=0; i<2; i++ ) {
-			velocity[i] = 0.0f;
-			while(velocity[i] == 0.0f) {
-				velocity[i] = random(-2,2);
-			}
-		}
-		return new PVector(velocity[0], velocity[1]);
+	public void mouseClicked() {
+		firstCell.velocity = new PVector(firstCell.position.x - mouseX, firstCell.position.y - mouseY);
+		firstCell.velocity.normalize();
 	}
 }
