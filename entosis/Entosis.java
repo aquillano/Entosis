@@ -48,6 +48,7 @@ public class Entosis extends PApplet {
 			eachMote.display();
 		}
 		
+		checkCollision();
 	}
 	
 	public void mouseClicked() {
@@ -63,6 +64,17 @@ public class Entosis extends PApplet {
 		
 		sum.div(10); // Get average
 		player.velocity = sum;
+	}
+	
+	public void checkCollision() {
+		
+		for ( Mote eachMote: moteList ) {
+			if( PVector.dist(player.position, eachMote.position) <= player.radius + eachMote.radius ) {
+				eachMote.velocity = new PVector(0,0);
+				eachMote.position = new PVector(-50,-50);
+				player.radius += eachMote.radius;
+			}
+		}
 	}
 	
 }
