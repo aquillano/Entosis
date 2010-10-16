@@ -5,13 +5,9 @@ import processing.core.PVector;
 
 public class Cell {
 	
-	protected float x;
-	protected float y;
+	protected PVector position;
 	
 	protected PVector velocity;
-	
-	protected float velocityX;
-	protected float velocityY;
 	
 	protected float radius;
 	protected int c1;
@@ -19,35 +15,34 @@ public class Cell {
 	protected int strokeThickness;
 	protected int strokeColor;
 	
-	public static PApplet parent;
+	public static PApplet papplet;
 
 	public Cell() {	// generic constructor
 	}
 	
-	public Cell(float x, float y, PVector velocity, float radius,
-			int c1, int c2, int strokeThickness, int strokeColor) {
+	public Cell(float radius, int c1, int c2, int strokeThickness, int strokeColor) {
 		super();
-		this.x = x;
-		this.y = y;
-		this.velocityX = velocity.x;
-		this.velocityY = velocity.y;
+		this.position = generateRandPVector(0, papplet.height);
+		this.velocity = generateRandPVector(-2, 2);
 		this.radius = radius;
 		this.c1 = c1;
 		this.c2 = c2;
 		this.strokeThickness = strokeThickness;
 		this.strokeColor = strokeColor;
+		
+		papplet.println("Cell Position: " + position.x + ", " + position.y );
 	}
 
 	public void update() {
-		x += velocityX;
-		y += velocityY;
+		position.x += velocity.x;
+		position.y += velocity.y;
 		
-		if( x+radius > 480 || x-radius < 0.0f ) { // How replace 480 with screenX from main class? // Have to pass in with every new Cell created?
-			velocityX *= -1;
+		if( position.x+radius > 480 || position.x-radius < 0.0f ) { // How replace 480 with screenX from main class? // Have to pass in with every new Cell created?
+			velocity.x *= -1;
 		}
 		
-		if ( y+radius > 320 || y-radius < 0.0f ) {
-			velocityY *= -1;
+		if ( position.y+radius > 320 || position.y-radius < 0.0f ) {
+			velocity.y *= -1;
 		}
 	}
 	
@@ -56,32 +51,45 @@ public class Cell {
 		float px = 0, py = 0, angle = 0;
 
 		// calculate differences between color components 
-		float deltaR = parent.red(c2) - parent.red(c1);
-		float deltaG = parent.green(c2) - parent.green(c1);
-		float deltaB = parent.blue(c2) - parent.blue(c1);
+		float deltaR = papplet.red(c2) - papplet.red(c1);
+		float deltaG = papplet.green(c2) - papplet.green(c1);
+		float deltaB = papplet.blue(c2) - papplet.blue(c1);
 		// hack to ensure there are no holes in gradient
 		// needs to be increased, as radius increases
 		float gapFiller = 8.0f;
 		
 		for (int i=0; i< radius; i++){
 		  for (float j=0; j<360; j+=1.0/gapFiller){
-		    px = x+parent.cos(parent.radians(angle))*i;
-		    py = y+parent.sin(parent.radians(angle))*i;
+		    px = position.x+papplet.cos(papplet.radians(angle))*i;
+		    py = position.y+papplet.sin(papplet.radians(angle))*i;
 		    angle+=1.0/gapFiller;
-		    int c = parent.color(
-		    (parent.red(c1)+(i)*(deltaR/radius)),
-		    (parent.green(c1)+(i)*(deltaG/radius)),
-		    (parent.blue(c1)+(i)*(deltaB/radius)) 
+		    int c = papplet.color(
+		    (papplet.red(c1)+(i)*(deltaR/radius)),
+		    (papplet.green(c1)+(i)*(deltaG/radius)),
+		    (papplet.blue(c1)+(i)*(deltaB/radius)) 
 		      );
-		    parent.set(parent.parseInt(px), parent.parseInt(py), c);
+		    papplet.set(papplet.parseInt(px), papplet.parseInt(py), c);
 		  }
 		}
 		// adds smooth edge 
 		// hack anti-aliasing
-		parent.noFill();
-		parent.stroke(strokeColor);
-		parent.strokeWeight(strokeThickness);
-		parent.ellipse(x, y, radius*2, radius*2);
+		papplet.noFill();
+		papplet.stroke(strokeColor);
+		papplet.strokeWeight(strokeThickness);
+		papplet.ellipse(position.x, position.y, radius*2, radius*2);
+	}
+	
+	public PVector generateRandPVector( float min, float max ) {
+		
+		float velocity[] = new float[2];
+		
+		for( int i=0; i<2; i++ ) {
+			velocity[i] = 0.0f;
+			while(velocity[i] == 0.0f) {
+				velocity[i] = papplet.random(min, max);
+			}
+		}
+		return new PVector(velocity[0], velocity[1]);
 	}
 
 }
