@@ -20,17 +20,11 @@ public class Cell {
 	public Cell() {	// generic constructor
 	}
 	
-	public Cell(float radius, int c1, int c2, int strokeThickness, int strokeColor) {
+	public Cell(float radius) {
 		super();
 		this.position = generateRandPVector(0, papplet.height);
 		this.velocity = generateRandPVector(-2, 2);
 		this.radius = radius;
-		this.c1 = c1;
-		this.c2 = c2;
-		this.strokeThickness = strokeThickness;
-		this.strokeColor = strokeColor;
-		
-		papplet.println("Cell Position: " + position.x + ", " + position.y );
 	}
 
 	public void update() {

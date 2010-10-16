@@ -1,5 +1,7 @@
 package entosis;
 
+import java.util.ArrayList;
+
 import processing.core.PApplet;
 import processing.core.PVector;
 
@@ -10,7 +12,8 @@ public class Entosis extends PApplet {
 	private int screenY = 320;
 	private int backgroundColor = color(64,64,64);
 	
-	Cell firstCell;
+	Player player;
+	ArrayList<Mote> moteList = new ArrayList<Mote>();
 
 	public void setup() {
 		
@@ -19,23 +22,30 @@ public class Entosis extends PApplet {
 		
 		Cell.papplet = this;
 		
-		firstCell = new Player(10, color(0,255,0,125), color(0,0,255,125), 1, color(0,0,0,125));
+		player = new Player(10);
+		
+		for( int i = 0; i < 5; i++ ) {
+			moteList.add( new Mote(random(5,15)) );
+		}
+		
 	}
 
 	public void draw() {
 		
-		//firstCell.x++;
-		//firstCell.y++;
-		
 		background(backgroundColor);
 		
-		firstCell.update();
-		firstCell.display();
+		player.update();
+		player.display();
+		
+		for ( Mote eachMote: moteList ) {
+			eachMote.update();
+			eachMote.display();
+		}
 		
 	}
 	
 	public void mouseClicked() {
-		firstCell.velocity = new PVector(firstCell.position.x - mouseX, firstCell.position.y - mouseY);
-		firstCell.velocity.normalize();
+		player.velocity = new PVector(player.position.x - mouseX, player.position.y - mouseY);
+		player.velocity.normalize();
 	}
 }
